@@ -1,8 +1,8 @@
-<div fxLayout="row"
-     fxLayoutAlign="start center">
-  <div fxFlex="50">
-    <div [chart]="chart"></div>
-  </div>
+<div fxLayout="row wrap"
+     fxLayoutAlign="space-between center">
   <div fxFlex="50"
-       [chart]="chart"></div>
+       *ngFor="let chart of charts">
+    <div class="dashboard-chart"
+         [chart]="chart"></div>
+  </div>
 </div>
