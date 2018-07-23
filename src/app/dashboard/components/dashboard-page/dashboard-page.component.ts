@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from '@app/order/services/order.service';
+import { Chart } from 'angular-highcharts';
 
 @Component({
   selector: 'app-dashboard-page',
