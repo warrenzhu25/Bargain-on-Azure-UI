@@ -50,7 +50,11 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "apm-ui:build"
+            "browserTarget": "apm-ui:build",
+            "ssl": true,
+            "sslKey": "cert/server.key",
+            "sslCert": "cert/server.crt",
+            "port": 54321
           },
           "configurations": {
             "production": {

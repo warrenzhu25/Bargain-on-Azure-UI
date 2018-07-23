@@ -1,0 +1,14 @@
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class DashboardService {
+  constructor() { }
+
+  listPrices() {
+  }
+
+  listResources() {
+
+  }
+
+}
