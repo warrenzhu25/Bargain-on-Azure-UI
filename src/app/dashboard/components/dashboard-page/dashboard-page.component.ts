@@ -8,6 +8,23 @@ import { Chart } from 'angular-highcharts';
   styleUrls: ['./dashboard-page.component.css']
 })
 export class DashboardPageComponent implements OnInit {
+  chart = new Chart({
+    chart: {
+      type: 'line'
+    },
+    title: {
+      text: 'Linechart'
+    },
+    credits: {
+      enabled: false
+    },
+    series: [
+      {
+        name: 'Line 1',
+        data: [1, 2, 3]
+      }
+    ]
+  });
 
   constructor(
     private orderService: OrderService,
