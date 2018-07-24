@@ -8,11 +8,12 @@ import { BatchJob } from "@app/order/framework/batchjob";
   styleUrls: ['./order-page.component.css']
 })
 export class OrderPageComponent implements OnInit {
-  jobName = "My Batch Job";
   jobTypes: string[] = [
     "Machine Learning",
     "Hadoop"
   ];
+
+  batchJob = new BatchJob(-1, "My batch job", "", "", "");
 
   constructor(
     private orderService: OrderService,
@@ -21,12 +22,24 @@ export class OrderPageComponent implements OnInit {
   ngOnInit() {
   }
 
-  uploadBatchJob(batchJob: BatchJob) {
+  fileSelected(event) {
+    var files = event.srcElement.files;
+    this.batchJob.batchJobFile = files[0];
+    console.log(this.batchJob.batchJobFile);
+  }
+
+  submitBatchJob() {
     // TODO: submit batch job to backend
-    return new BatchJob(batchJob.id, batchJob.jobName, "Waiting", batchJob.type);
+    console.log(this.batchJob);
+
+    return new BatchJob(this.batchJob.id,
+      this.batchJob.jobName,
+      "Waiting",
+      this.batchJob.type,
+      this.batchJob.batchJobFile);
   }
 
   verifyPrice() {
-
+    // 
   }
 }

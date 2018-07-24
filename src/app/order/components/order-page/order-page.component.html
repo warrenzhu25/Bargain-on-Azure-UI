@@ -9,20 +9,18 @@
           <mat-form-field>
             <input matInput
                    placeholder="Job Name"
-                   value="{{ jobName }}">
+                   value="{{ batchJob.jobName }}">
           </mat-form-field>
         </td>
         <td>
-          <button mat-button
-                  (click)="imgFileInput.click()">Upload batch job</button>
-          <input hidden
-                 type="file"
-                 #imgFileInput
-                 (change)="uploadBatchJob($event)" />
+          <input type="file"
+                 id="batchJobFile"
+                 name="batchJobFile"
+                 (change)="fileSelected($event)" />
         </td>
       </tr>
       <tr>
-        <td>
+        <td colspan="2">
           <mat-form-field>
             <mat-select placeholder="Batch Job Type">
               <mat-option *ngFor="let type of jobTypes"
@@ -39,7 +37,7 @@
             <input matInput
                    placeholder="Expected Price"
                    type="number"
-                   value="{{ expectedPrice }}">
+                   value="{{ batchJob.expectedPrice }}">
             <span matPrefix>$&nbsp;</span>
             <span matSuffix>/hour</span>
           </mat-form-field>
@@ -51,7 +49,7 @@
             <input matInput
                    [matDatepicker]="deadlinepicker"
                    placeholder="Choose deadline"
-                   value="{{ deadlineDate }}">
+                   value="{{ batchJob.deadlineDate }}">
             <mat-datepicker-toggle matSuffix
                                    [for]="deadlinepicker"></mat-datepicker-toggle>
             <mat-datepicker #deadlinepicker></mat-datepicker>
@@ -64,7 +62,7 @@
             <input matInput
                    [matDatepicker]="starttimepicker"
                    placeholder="Choose a start time"
-                   value="{{ startDate }}">
+                   value="{{ batchJob.startDate }}">
             <mat-datepicker-toggle matSuffix
                                    [for]="starttimepicker"></mat-datepicker-toggle>
             <mat-datepicker #starttimepicker></mat-datepicker>
@@ -84,6 +82,7 @@
         </td>
         <td>
           <button mat-flat-button
+                  (click)="submitBatchJob()"
                   color="primary">Submit</button>
         </td>
       </tr>
