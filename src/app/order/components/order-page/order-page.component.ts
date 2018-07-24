@@ -15,6 +15,7 @@ export class OrderPageComponent implements OnInit {
   ];
 
   batchJob = new BatchJob(-1, "My batch job", "", "", "");
+  batchJobs: BatchJob[];
 
   constructor(
     private orderService: OrderService,
@@ -22,6 +23,10 @@ export class OrderPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    //TODO Load batch job list from backend
+    this.batchJobs = [
+      { id: 1, jobName: 'My Batch Job', status: 'Running', type: 'Hadoop', batchJobFile: 'batchJob123.jar' }
+    ];
   }
 
   fileSelected(event) {
