@@ -25,4 +25,8 @@ export class OrderPageComponent implements OnInit {
     // TODO: submit batch job to backend
     return new BatchJob(batchJob.id, batchJob.jobName, "Waiting", batchJob.type);
   }
+
+  verifyPrice() {
+
+  }
 }

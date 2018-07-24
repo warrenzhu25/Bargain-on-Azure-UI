@@ -22,6 +22,18 @@
         </td>
       </tr>
       <tr>
+        <td>
+          <mat-form-field>
+            <mat-select placeholder="Batch Job Type">
+              <mat-option *ngFor="let type of jobTypes"
+                          [value]="type">
+                {{type}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
         <td colspan="2">
           <mat-form-field>
             <input matInput
@@ -60,30 +72,19 @@
         </td>
       </tr>
       <tr>
-        <td>
-          <mat-form-field>
-            <mat-select placeholder="Batch Job Type">
-              <mat-option *ngFor="let type of jobTypes"
-                          [value]="type">
-                {{type}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </td>
-      </tr>
-      <tr>
         <td colspan="2">
 
         </td>
       </tr>
       <tr>
-        <td colspan="2"
-            fxLayout="row"
-            fxLayoutAlign="space-around center">
+        <td>
+          <button mat-stroked-button
+                  color="primary"
+                  (click)="verifyPrice()">Verify Price</button>
+        </td>
+        <td>
           <button mat-flat-button
                   color="primary">Submit</button>
-          <button mat-flat-button
-                  color="primary">Clear</button>
         </td>
       </tr>
     </table>
