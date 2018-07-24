@@ -17,6 +17,8 @@ export class OrderPageComponent implements OnInit {
   batchJob = new BatchJob(-1, "My batch job", "", "", "");
   batchJobs: BatchJob[];
 
+  displayedColumns: string[] = ['id', 'jobName', 'status', 'type', 'batchJobFile'];
+
   constructor(
     private orderService: OrderService,
     private snackBar: MatSnackBar
@@ -25,7 +27,12 @@ export class OrderPageComponent implements OnInit {
   ngOnInit() {
     //TODO Load batch job list from backend
     this.batchJobs = [
-      { id: 1, jobName: 'My Batch Job', status: 'Running', type: 'Hadoop', batchJobFile: 'batchJob123.jar' }
+      { id: 1, jobName: 'My Batch Job', status: 'Running', type: 'Hadoop', batchJobFile: 'batchJob123.jar' },
+      { id: 2, jobName: 'My Batch Job', status: 'Finished', type: 'Hadoop', batchJobFile: 'batchJob123.jar' },
+      { id: 3, jobName: 'My Batch Job', status: 'Waiting', type: 'Machine Learning', batchJobFile: 'machineLearning1.jar' },
+      { id: 4, jobName: 'My Batch Job', status: 'Running', type: 'Hadoop', batchJobFile: 'batchJob123.jar' },
+      { id: 5, jobName: 'My Batch Job', status: 'Finished', type: 'Machine Learning', batchJobFile: 'machineLearning3.jar' },
+      { id: 6, jobName: 'My Batch Job', status: 'Running', type: 'Hadoop', batchJobFile: 'batchJob123.jar' },
     ];
   }
 
