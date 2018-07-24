@@ -1,3 +1,91 @@
-<p>
-  order-page works!
-</p>
+<div fxLayout="row"
+     fxLayoutAlign="center"
+     id="batch-job-form">
+  <form fxFlex="60"
+        fxLayoutAlign="center">
+    <table>
+      <tr>
+        <td>
+          <mat-form-field>
+            <input matInput
+                   placeholder="Job Name"
+                   value="{{ jobName }}">
+          </mat-form-field>
+        </td>
+        <td>
+          <button mat-button
+                  (click)="imgFileInput.click()">Upload batch job</button>
+          <input hidden
+                 type="file"
+                 #imgFileInput
+                 (change)="uploadBatchJob($event)" />
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <mat-form-field>
+            <input matInput
+                   placeholder="Expected Price"
+                   type="number"
+                   value="{{ expectedPrice }}">
+            <span matPrefix>$&nbsp;</span>
+            <span matSuffix>/hour</span>
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <mat-form-field>
+            <input matInput
+                   [matDatepicker]="deadlinepicker"
+                   placeholder="Choose deadline"
+                   value="{{ deadlineDate }}">
+            <mat-datepicker-toggle matSuffix
+                                   [for]="deadlinepicker"></mat-datepicker-toggle>
+            <mat-datepicker #deadlinepicker></mat-datepicker>
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <mat-form-field>
+            <input matInput
+                   [matDatepicker]="starttimepicker"
+                   placeholder="Choose a start time"
+                   value="{{ startDate }}">
+            <mat-datepicker-toggle matSuffix
+                                   [for]="starttimepicker"></mat-datepicker-toggle>
+            <mat-datepicker #starttimepicker></mat-datepicker>
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <mat-form-field>
+            <mat-select placeholder="Batch Job Type">
+              <mat-option *ngFor="let type of jobTypes"
+                          [value]="type">
+                {{type}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2"
+            fxLayout="row"
+            fxLayoutAlign="space-around center">
+          <button mat-flat-button
+                  color="primary">Submit</button>
+          <button mat-flat-button
+                  color="primary">Clear</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
