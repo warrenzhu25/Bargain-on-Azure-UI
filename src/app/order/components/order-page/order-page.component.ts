@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderService } from '@app/order/services/order.service';
 import { BatchJob } from "@app/order/framework/batchjob";
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-order-page',
@@ -17,6 +18,7 @@ export class OrderPageComponent implements OnInit {
 
   constructor(
     private orderService: OrderService,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -32,14 +34,27 @@ export class OrderPageComponent implements OnInit {
     // TODO: submit batch job to backend
     console.log(this.batchJob);
 
-    return new BatchJob(this.batchJob.id,
+    let suggestedBatchJob = new BatchJob(this.batchJob.id,
       this.batchJob.jobName,
       "Waiting",
       this.batchJob.type,
-      this.batchJob.batchJobFile);
+      this.batchJob.batchJobFile,
+      this.batchJob.price,
+      this.batchJob.deadline,
+      this.batchJob.price,
+      this.batchJob.deadline); // Same suggested value as submitted
+
+    this.showSubmitSuccess();
   }
 
-  verifyPrice() {
-    // 
+  showSubmitSuccess() {
+    console.log("Show submit success snackbar");
+    this.openSnackBar("Submit batch job successfully", "OK");
+  }
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 }
