@@ -16,7 +16,7 @@ export class OrderPageComponent implements OnInit {
   ];
 
   batchJob = new BatchJob(-1, "My batch job", "", "", "");
-  batchJobs: Observable<BatchJob[]>;
+  batchJobs: BatchJob[];
 
   displayedColumns: string[] = ['id', 'jobName', 'status', 'type', 'batchJobFile', 'price', 'deadline'];
 
@@ -26,8 +26,9 @@ export class OrderPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    //TODO Load batch job list from backend
-    this.batchJobs = this.orderService.getBatchJobList();
+    this.orderService.getBatchJobList().subscribe(val => {
+      this.batchJobs = val;
+    });
   }
 
   fileSelected(event) {
@@ -68,7 +69,10 @@ export class OrderPageComponent implements OnInit {
     });
   }
 
-  verifyPrice() {
+  verifyPrice(): BatchJob {
+    let verifiedJob;
+    this.orderService.create(this.batchJob).subscribe(val => { verifiedJob = val; });
 
+    return verifiedJob;
   }
 }
