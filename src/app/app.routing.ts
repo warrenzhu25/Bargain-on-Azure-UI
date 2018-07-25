@@ -5,6 +5,11 @@ import { OrderPageComponent } from './order/components/order-page/order-page.com
 
 const routes: Routes = [
   {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'dashboard'
+  },
+  {
     path: 'dashboard',
     component: DashboardPageComponent,
   },

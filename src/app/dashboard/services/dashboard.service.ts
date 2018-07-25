@@ -1,64 +1,124 @@
 import { Injectable } from '@angular/core';
 import { IndividualSeriesOptions } from 'highcharts';
-import { DashboardData } from '@app/dashboard/framework/dashboard-data';
+import { DashboardData, DashboardChart } from '@app/dashboard/framework/dashboard-data';
+import { HttpClient } from '@angular/common/http';
+
 
 @Injectable()
 export class DashboardService {
-  constructor() { }
+  private readonly BaseUrl = 'https://bargain-on-azure.azurewebsites.net';
 
-  listPrices(): DashboardData[] {
-    return [
+  constructor(
+    private _http: HttpClient
+  ) { }
+
+  async listPrices(): Promise<DashboardChart> {
+    const response = <any[]>await this._get('/getPriceChart');
+    const chart: DashboardChart = {
+      data: [],
+      category: [],
+    };
+    const data: DashboardData[] = [
       {
         name: 'CPU',
-        data: [10, 20, 30, 40],
+        data: [],
       },
       {
-        name: 'Storage',
-        data: [20, 10, 10, 30],
+        name: 'MEMORY',
+        data: [],
       },
       {
-        name: 'Network',
-        data: [30, 20, 10, 40],
+        name: 'DISK',
+        data: [],
       }
     ];
+    const category = new Set<any>();
+    response.forEach(d => {
+      data.filter(x => x.name === d['resourceType'])[0].data.push(d['price']);
+      category.add(d['date']);
+    });
+    chart.data = data;
+    chart.category = Array.from(category).sort();
+    return chart;
   }
 
-  listProfits(): DashboardData[] {
-    return [
-      {
-        name: 'floating',
-        data: [30, 20, 10, 10],
-      },
-      {
-        name: 'fixed',
-        data: [20, 20, 20, 20],
-      },
-    ];
+  async listProfits(): Promise<DashboardChart> {
+    const response = <any[]>await this._get('/getProfitChart');
+    const chart = {
+      data: [{ name: 'proift', data: [] }],
+      category: [],
+    };
+    response.forEach(r => {
+      chart.data[0].data.push(r['profit']);
+      chart.category.push(r['date']);
+    });
+    console.log(chart);
+    return chart;
   }
 
-  listResources(): DashboardData[] {
-    return [
+
+  async listResources(): Promise<DashboardChart> {
+    const response = <any[]>await this._get('/getRemainChart');
+    const chart: DashboardChart = {
+      data: [],
+      category: [],
+    };
+    const data: DashboardData[] = [
       {
         name: 'CPU',
-        data: [100, 150, 200, 100],
+        data: [],
       },
       {
-        name: 'Storage',
-        data: [50, 100, 100, 300],
+        name: 'MEMORY',
+        data: [],
       },
       {
-        name: 'Network',
-        data: [30, 10, 100, 40],
+        name: 'DISK',
+        data: [],
       }
     ];
+    const category = new Set<any>();
+    response.forEach(d => {
+      data.filter(x => x.name === d['resourceType'])[0].data.push(d['count']);
+      category.add(d['date']);
+    });
+    chart.data = data;
+    chart.category = Array.from(category).sort();
+    return chart;
   }
 
-  listUsages(): DashboardData[] {
-    return [
+  async listUsages(): Promise<DashboardChart> {
+    const response = <any[]>await this._get('/getUsageChart');
+    const chart: DashboardChart = {
+      data: [],
+      category: [],
+    };
+    const data: DashboardData[] = [
       {
-        name: 'Number',
-        data: [100, 150, 200, 200],
+        name: 'CPU',
+        data: [],
       },
+      {
+        name: 'MEMORY',
+        data: [],
+      },
+      {
+        name: 'DISK',
+        data: [],
+      }
     ];
+    const category = new Set<any>();
+    response.forEach(d => {
+      data.filter(x => x.name === d['resourceType'])[0].data.push(d['usage']);
+      category.add(d['date']);
+    });
+    chart.data = data;
+    chart.category = Array.from(category).sort();
+    return chart;
+  }
+
+  private async _get(url) {
+    this._http.get(`${this.BaseUrl}/${url}`).subscribe(console.log);
+    return this._http.get(`${this.BaseUrl}/${url}`).toPromise();
   }
 }

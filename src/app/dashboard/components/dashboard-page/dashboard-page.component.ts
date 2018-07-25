@@ -3,7 +3,7 @@ import { OrderService } from '@app/order/services/order.service';
 import { Chart } from 'angular-highcharts';
 import { IndividualSeriesOptions } from 'highcharts';
 import { DashboardService } from '@app/dashboard/services/dashboard.service';
-import { DashboardData } from '@app/dashboard/framework/dashboard-data';
+import { DashboardData, DashboardChart } from '@app/dashboard/framework/dashboard-data';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -17,33 +17,33 @@ export class DashboardPageComponent implements OnInit {
     private dashboardService: DashboardService,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.charts = [
       this._toChart(
         'Resource',
         'line',
-        this.dashboardService.listResources()
+        await this.dashboardService.listResources()
       ),
       this._toChart(
         'Price',
         'line',
-        this.dashboardService.listPrices()
+        await this.dashboardService.listPrices()
       ),
       this._toChart(
         'Profit and Loss',
         'line',
-        this.dashboardService.listProfits()
+        await this.dashboardService.listProfits()
       ),
       this._toChart(
         'Usage',
         'line',
-        this.dashboardService.listUsages()
+        await this.dashboardService.listUsages()
       ),
 
     ];
   }
 
-  private _toChart(title: string, type: string, data: DashboardData[], yAxis: string = ''): Chart {
+  private _toChart(title: string, type: string, chart: DashboardChart, yAxis: string = ''): Chart {
     return new Chart({
       chart: {
         type: type,
@@ -57,15 +57,15 @@ export class DashboardPageComponent implements OnInit {
       xAxis: {
         title: {
           text: 'Time'
-        }
+        },
+        categories: chart.category
       },
       yAxis: {
         title: {
           text: yAxis
         }
       },
-      series: <IndividualSeriesOptions[]>data,
+      series: <IndividualSeriesOptions[]>chart.data,
     });
   }
-
 }
