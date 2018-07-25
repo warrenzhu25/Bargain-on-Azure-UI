@@ -7,8 +7,8 @@ import { Observable } from "rxjs/Observable";
 @Injectable()
 export class OrderService {
   constructor(private http: HttpClient) { }
-  create(batchJob: BatchJob) {
-    return this.http.post(Urls.ServiceUrls.SUBMIT_JOB_URL, batchJob);
+  create(batchJob: BatchJob): Observable<BatchJob> {
+    return this.http.post<BatchJob>(Urls.ServiceUrls.SUBMIT_JOB_URL, batchJob);
   }
 
   getBatchJobList(): Observable<BatchJob[]> {
