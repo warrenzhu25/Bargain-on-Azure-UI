@@ -18,6 +18,9 @@ export class OrderPageComponent implements OnInit {
   batchJob = new BatchJob(-1, "My batch job", "", "", "");
   batchJobs: BatchJob[];
 
+  priceNotMatch: boolean = false;
+  deadlineNotMatch: boolean = false;
+
   displayedColumns: string[] = ['id', 'name', 'status', 'type', 'batchJobFile', 'price', 'deadline'];
 
   constructor(
@@ -44,10 +47,30 @@ export class OrderPageComponent implements OnInit {
   submitBatchJob() {
     console.log(this.batchJob);
 
+    let verifiedJob;
     this.batchJob.status = "SUBMITTED";
     this.orderService.create(this.batchJob).subscribe(val => {
-      this.loadBatchJobList();
-      this.showSubmitSuccess();
+      verifiedJob = val;
+      console.log("Verified batch job: " + verifiedJob);
+
+      // If suggested price or suggested deadline not empty, user needs to submit again.
+      if (verifiedJob.suggestedPrice) {
+        this.batchJob.price = verifiedJob.suggestedPrice;
+        this.priceNotMatch = true;
+      }
+
+      if (verifiedJob.suggestDeadline) {
+        this.batchJob.deadline = new Date(verifiedJob.suggestDeadline);
+        this.deadlineNotMatch = true;
+      }
+
+      if (!verifiedJob.suggestedPrice && !verifiedJob.suggestDeadline) {
+        // If price and deadline empty, the job has been submitted.
+        this.loadBatchJobList();
+        this.showSubmitSuccess();
+        this.priceNotMatch = false;
+        this.deadlineNotMatch = false;
+      }
     });
   }
 
@@ -55,24 +78,13 @@ export class OrderPageComponent implements OnInit {
     this.openSnackBar("Submit batch job successfully", "OK");
   }
 
+  showSubmitFailure() {
+    this.openSnackBar("Price or deadline not met, use suggested price/deadline and submit again.", "OK");
+  }
+
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 2000,
     });
-  }
-
-  verifyPrice() {
-    let verifiedJob;
-    this.orderService.create(this.batchJob).subscribe(val => { verifiedJob = val; });
-
-    if (this.batchJob.price != verifiedJob.suggestedPrice) {
-      this.batchJob.price = verifiedJob.suggestedPrice;
-      // TODO Show batch job price is updated with suggested price
-    }
-
-    if (this.batchJob.deadline != verifiedJob.suggestedDeadline) {
-      this.batchJob.deadline = verifiedJob.suggestedDeadline;
-      // TODO Show batch job deadline is updated with suggested deadline
-    }
   }
 }

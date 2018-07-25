@@ -8,7 +8,7 @@ export class BatchJob {
     public price?: number,
     public deadline?: Date,
     public suggestedPrice?: number,
-    public suggestedDeadline?: Date
+    public suggestDeadline?: Date
   ) { }
 
 }

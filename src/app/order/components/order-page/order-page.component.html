@@ -38,6 +38,9 @@
                    placeholder="Expected Price"
                    type="number"
                    [(ngModel)]="batchJob.price">
+            <mat-hint class="warn-hint"
+                      align="start"
+                      *ngIf="priceNotMatch">Price not met, will use suggested price</mat-hint>
             <span matPrefix>$&nbsp;</span>
           </mat-form-field>
         </td>
@@ -50,18 +53,12 @@
             <mat-datepicker-toggle matSuffix
                                    [for]="deadlinepicker"></mat-datepicker-toggle>
             <mat-datepicker #deadlinepicker></mat-datepicker>
+            <mat-hint class="warn-hint"
+                      align="start"
+                      *ngIf="deadlineNotMatch">Deadline not met, will use suggested deadline</mat-hint>
           </mat-form-field>
         </td>
         <td>
-          <mat-form-field>
-            <input matInput
-                   [matDatepicker]="starttimepicker"
-                   placeholder="Choose a start time"
-                   [(ngModel)]="batchJob.startTime">
-            <mat-datepicker-toggle matSuffix
-                                   [for]="starttimepicker"></mat-datepicker-toggle>
-            <mat-datepicker #starttimepicker></mat-datepicker>
-          </mat-form-field>
         </td>
       </tr>
       <tr>
@@ -73,9 +70,6 @@
         <td></td>
         <td fxLayout="row"
             fxLayoutAlign="space-around center">
-          <button mat-stroked-button
-                  color="primary"
-                  (click)="verifyPrice()">Verify Price</button>
           <button mat-flat-button
                   (click)="submitBatchJob()"
                   color="primary">Submit</button>
