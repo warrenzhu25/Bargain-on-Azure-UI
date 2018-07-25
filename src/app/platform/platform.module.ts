@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { MatTableModule } from '@angular/material/table';
     MatSelectModule,
     MatSnackBarModule,
     MatDividerModule,
-    MatTableModule
+    MatTableModule,
+    MatToolbarModule
   ],
   exports: [
     MatTabsModule,
@@ -41,7 +43,8 @@ import { MatTableModule } from '@angular/material/table';
     MatSelectModule,
     MatSnackBarModule,
     MatDividerModule,
-    MatTableModule
+    MatTableModule,
+    MatToolbarModule
   ]
 })
 export class PlatformModule { }

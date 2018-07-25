@@ -56,6 +56,10 @@ export class OrderPageComponent implements OnInit {
       this.batchJob.price,
       this.batchJob.deadline); // Same suggested value as submitted
 
+    if (this.batchJob.price != suggestedBatchJob.price) {
+      // Remind user about suggested price
+    }
+
     this.showSubmitSuccess();
   }
 
