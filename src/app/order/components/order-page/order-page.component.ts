@@ -10,11 +10,11 @@ import { MatSnackBar } from '@angular/material';
 })
 export class OrderPageComponent implements OnInit {
   jobTypes: string[] = [
-    "Machine Learning",
-    "Hadoop"
+    "MACHINE_LEARNING",
+    "HADOOP"
   ];
 
-  batchJob = new BatchJob(-1, "My batch job", "", "", "");
+  batchJob = new BatchJob(-1, "My batch job", "", this.jobTypes[0], "");
   batchJobs: BatchJob[];
 
   priceNotMatch: boolean = false;
