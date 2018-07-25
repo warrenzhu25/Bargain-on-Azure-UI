@@ -16,7 +16,8 @@
         </td>
         <td>
           <mat-form-field>
-            <mat-select placeholder="Batch Job Type">
+            <mat-select placeholder="Batch Job Type"
+                        [(ngModel)]="batchJob.type">
               <mat-option *ngFor="let type of jobTypes"
                           [value]="type">
                 {{type}}
