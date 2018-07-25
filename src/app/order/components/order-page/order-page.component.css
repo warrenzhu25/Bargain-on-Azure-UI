@@ -1,7 +1,9 @@
-#batch-job-form {
-  margin-top: 32px;
-}
-
 .order-divider {
   margin-top: 16px;
+}
+
+.batch-job-toolbar {
+  height: 40px;
+  font-weight: 400;
+  font-size: 16px;
 }
