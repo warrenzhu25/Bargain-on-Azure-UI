@@ -1,4 +1,7 @@
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
+
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,7 +34,9 @@ import { MatListModule } from '@angular/material/list';
     MatDividerModule,
     MatTableModule,
     MatToolbarModule,
-    MatListModule
+    MatListModule,
+    BrowserModule,
+    HttpClientModule
   ],
   exports: [
     MatTabsModule,
@@ -47,7 +52,9 @@ import { MatListModule } from '@angular/material/list';
     MatDividerModule,
     MatTableModule,
     MatToolbarModule,
-    MatListModule
+    MatListModule,
+    BrowserModule,
+    HttpClientModule
   ]
 })
 export class PlatformModule { }
