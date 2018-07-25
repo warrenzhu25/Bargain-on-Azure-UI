@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { OrderService } from '@app/order/services/order.service';
 import { BatchJob } from "@app/order/framework/batchjob";
 import { MatSnackBar } from '@angular/material';
@@ -20,11 +20,12 @@ export class OrderPageComponent implements OnInit {
   priceNotMatch: boolean = false;
   deadlineNotMatch: boolean = false;
 
-  displayedColumns: string[] = ['id', 'name', 'status', 'type', 'batchJobFile', 'price', 'deadline'];
+  displayedColumns: string[] = ['id', 'name', 'status', 'type', 'batchJobFile', 'price', 'deadline', 'operation'];
 
   constructor(
     private orderService: OrderService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private changeDetectorRefs: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
@@ -88,6 +89,22 @@ export class OrderPageComponent implements OnInit {
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
       duration: 10000,
+    });
+  }
+
+  delete(event, batchJob: BatchJob) {
+    console.log("Event: ", event, "Item: ", batchJob);
+    this.orderService.deleteJob(batchJob.id).subscribe(val => {
+      console.log(batchJob + " deleted successfully");
+
+      for (var i = this.batchJobs.length - 1; i >= 0; --i) {
+        if (this.batchJobs[i].id == batchJob.id) {
+          this.batchJobs.splice(i, 1);
+        }
+      }
+
+      this.batchJobs = this.batchJobs.slice();
+      this.changeDetectorRefs.detectChanges();
     });
   }
 }
