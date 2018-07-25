@@ -11,7 +11,7 @@
           <mat-form-field>
             <input matInput
                    placeholder="Job Name"
-                   value="{{ batchJob.jobName }}">
+                   [(ngModel)]="batchJob.name">
           </mat-form-field>
         </td>
         <td>
@@ -37,7 +37,7 @@
             <input matInput
                    placeholder="Expected Price"
                    type="number"
-                   value="{{ batchJob.expectedPrice }}">
+                   [(ngModel)]="batchJob.price">
             <span matPrefix>$&nbsp;</span>
           </mat-form-field>
         </td>
@@ -46,7 +46,7 @@
             <input matInput
                    [matDatepicker]="deadlinepicker"
                    placeholder="Choose deadline"
-                   value="{{ batchJob.deadlineDate }}">
+                   [(ngModel)]="batchJob.deadline">
             <mat-datepicker-toggle matSuffix
                                    [for]="deadlinepicker"></mat-datepicker-toggle>
             <mat-datepicker #deadlinepicker></mat-datepicker>
@@ -57,7 +57,7 @@
             <input matInput
                    [matDatepicker]="starttimepicker"
                    placeholder="Choose a start time"
-                   value="{{ batchJob.startDate }}">
+                   [(ngModel)]="batchJob.startTime">
             <mat-datepicker-toggle matSuffix
                                    [for]="starttimepicker"></mat-datepicker-toggle>
             <mat-datepicker #starttimepicker></mat-datepicker>
@@ -96,11 +96,11 @@
           *matCellDef="let job"> {{job.id}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="jobName">
+    <ng-container matColumnDef="name">
       <th mat-header-cell
           *matHeaderCellDef> Job Name </th>
       <td mat-cell
-          *matCellDef="let job"> {{job.jobName}} </td>
+          *matCellDef="let job"> {{job.name}} </td>
     </ng-container>
 
     <ng-container matColumnDef="status">

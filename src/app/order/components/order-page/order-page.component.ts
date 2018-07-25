@@ -18,7 +18,7 @@ export class OrderPageComponent implements OnInit {
   batchJob = new BatchJob(-1, "My batch job", "", "", "");
   batchJobs: BatchJob[];
 
-  displayedColumns: string[] = ['id', 'jobName', 'status', 'type', 'batchJobFile', 'price', 'deadline'];
+  displayedColumns: string[] = ['id', 'name', 'status', 'type', 'batchJobFile', 'price', 'deadline'];
 
   constructor(
     private orderService: OrderService,
@@ -26,6 +26,10 @@ export class OrderPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loadBatchJobList();
+  }
+
+  loadBatchJobList() {
     this.orderService.getBatchJobList().subscribe(val => {
       this.batchJobs = val;
     });
@@ -38,28 +42,16 @@ export class OrderPageComponent implements OnInit {
   }
 
   submitBatchJob() {
-    // TODO: submit batch job to backend
     console.log(this.batchJob);
 
-    let suggestedBatchJob = new BatchJob(this.batchJob.id,
-      this.batchJob.jobName,
-      "Waiting",
-      this.batchJob.type,
-      this.batchJob.batchJobFile,
-      this.batchJob.price,
-      this.batchJob.deadline,
-      this.batchJob.price,
-      this.batchJob.deadline); // Same suggested value as submitted
-
-    if (this.batchJob.price != suggestedBatchJob.price) {
-      // Remind user about suggested price
-    }
-
-    this.showSubmitSuccess();
+    this.batchJob.status = "SUBMITTED";
+    this.orderService.create(this.batchJob).subscribe(val => {
+      this.loadBatchJobList();
+      this.showSubmitSuccess();
+    });
   }
 
   showSubmitSuccess() {
-    console.log("Show submit success snackbar");
     this.openSnackBar("Submit batch job successfully", "OK");
   }
 
@@ -69,10 +61,18 @@ export class OrderPageComponent implements OnInit {
     });
   }
 
-  verifyPrice(): BatchJob {
+  verifyPrice() {
     let verifiedJob;
     this.orderService.create(this.batchJob).subscribe(val => { verifiedJob = val; });
 
-    return verifiedJob;
+    if (this.batchJob.price != verifiedJob.suggestedPrice) {
+      this.batchJob.price = verifiedJob.suggestedPrice;
+      // TODO Show batch job price is updated with suggested price
+    }
+
+    if (this.batchJob.deadline != verifiedJob.suggestedDeadline) {
+      this.batchJob.deadline = verifiedJob.suggestedDeadline;
+      // TODO Show batch job deadline is updated with suggested deadline
+    }
   }
 }
