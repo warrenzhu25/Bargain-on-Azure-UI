@@ -16,3 +16,7 @@
   width: 280px;
   margin: 0 8px;
 }
+
+.warn-hint {
+  color: orangered;
+}
