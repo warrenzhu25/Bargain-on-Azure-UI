@@ -91,7 +91,7 @@
 
     <ng-container matColumnDef="id">
       <th mat-header-cell
-          *matHeaderCellDef> No. </th>
+          *matHeaderCellDef> Job ID. </th>
       <td mat-cell
           *matCellDef="let job"> {{job.id}} </td>
     </ng-container>
@@ -123,6 +123,15 @@
       <td mat-cell
           *matCellDef="let job">
         <a href="">{{job.batchJobFile}} </a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <th mat-header-cell
+          *matHeaderCellDef> Batch Job price </th>
+      <td mat-cell
+          *matCellDef="let job">
+        {{job.price}}
       </td>
     </ng-container>
 
