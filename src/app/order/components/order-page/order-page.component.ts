@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from '@app/order/services/order.service';
 import { BatchJob } from "@app/order/framework/batchjob";
 import { MatSnackBar } from '@angular/material';
-import { Observable } from "rxjs/Observable";
 
 @Component({
   selector: 'app-order-page',
@@ -64,6 +63,10 @@ export class OrderPageComponent implements OnInit {
         this.deadlineNotMatch = true;
       }
 
+      if (this.priceNotMatch || this.deadlineNotMatch) {
+        this.showSubmitFailure();
+      }
+
       if (!verifiedJob.suggestedPrice && !verifiedJob.suggestDeadline) {
         // If price and deadline empty, the job has been submitted.
         this.loadBatchJobList();
@@ -84,7 +87,7 @@ export class OrderPageComponent implements OnInit {
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
-      duration: 2000,
+      duration: 10000,
     });
   }
 }
