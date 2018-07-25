@@ -1,5 +1,9 @@
 .order-divider {
-  margin-top: 16px;
+  margin-top: 48px;
+}
+
+.batch-job-toolbar {
+  margin-bottom: 8px;
 }
 
 .batch-job-toolbar {
