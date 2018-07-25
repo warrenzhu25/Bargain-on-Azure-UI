@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from '@app/order/services/order.service';
 import { BatchJob } from "@app/order/framework/batchjob";
 import { MatSnackBar } from '@angular/material';
+import { Observable } from "rxjs/Observable";
 
 @Component({
   selector: 'app-order-page',
@@ -15,9 +16,9 @@ export class OrderPageComponent implements OnInit {
   ];
 
   batchJob = new BatchJob(-1, "My batch job", "", "", "");
-  batchJobs: BatchJob[];
+  batchJobs: Observable<BatchJob[]>;
 
-  displayedColumns: string[] = ['id', 'jobName', 'status', 'type', 'batchJobFile', 'price'];
+  displayedColumns: string[] = ['id', 'jobName', 'status', 'type', 'batchJobFile', 'price', 'deadline'];
 
   constructor(
     private orderService: OrderService,
@@ -26,14 +27,7 @@ export class OrderPageComponent implements OnInit {
 
   ngOnInit() {
     //TODO Load batch job list from backend
-    this.batchJobs = [
-      { id: 1, jobName: 'My Batch Job', status: 'Running', type: 'Hadoop', batchJobFile: 'batchJob123.jar', price: 123 },
-      { id: 2, jobName: 'My Batch Job', status: 'Finished', type: 'Hadoop', batchJobFile: 'batchJob123.jar', price: 456 },
-      { id: 3, jobName: 'My Batch Job', status: 'Waiting', type: 'Machine Learning', batchJobFile: 'machineLearning1.jar', price: 789 },
-      { id: 4, jobName: 'My Batch Job', status: 'Running', type: 'Hadoop', batchJobFile: 'batchJob123.jar', price: 321 },
-      { id: 5, jobName: 'My Batch Job', status: 'Finished', type: 'Machine Learning', batchJobFile: 'machineLearning3.jar', price: 632 },
-      { id: 6, jobName: 'My Batch Job', status: 'Running', type: 'Hadoop', batchJobFile: 'batchJob123.jar', price: 100 },
-    ];
+    this.batchJobs = this.orderService.getBatchJobList();
   }
 
   fileSelected(event) {
@@ -72,5 +66,9 @@ export class OrderPageComponent implements OnInit {
     this.snackBar.open(message, action, {
       duration: 2000,
     });
+  }
+
+  verifyPrice() {
+
   }
 }
