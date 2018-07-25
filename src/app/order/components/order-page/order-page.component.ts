@@ -17,7 +17,10 @@ export class OrderPageComponent implements OnInit {
   batchJob = new BatchJob(-1, "My batch job", "", "", "");
   batchJobs: BatchJob[];
 
-  displayedColumns: string[] = ['id', 'jobName', 'status', 'type', 'batchJobFile', 'price'];
+  priceNotMatch: boolean = false;
+  deadlineNotMatch: boolean = false;
+
+  displayedColumns: string[] = ['id', 'name', 'status', 'type', 'batchJobFile', 'price', 'deadline'];
 
   constructor(
     private orderService: OrderService,
@@ -25,15 +28,13 @@ export class OrderPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    //TODO Load batch job list from backend
-    this.batchJobs = [
-      { id: 1, jobName: 'My Batch Job', status: 'Running', type: 'Hadoop', batchJobFile: 'batchJob123.jar', price: 123 },
-      { id: 2, jobName: 'My Batch Job', status: 'Finished', type: 'Hadoop', batchJobFile: 'batchJob123.jar', price: 456 },
-      { id: 3, jobName: 'My Batch Job', status: 'Waiting', type: 'Machine Learning', batchJobFile: 'machineLearning1.jar', price: 789 },
-      { id: 4, jobName: 'My Batch Job', status: 'Running', type: 'Hadoop', batchJobFile: 'batchJob123.jar', price: 321 },
-      { id: 5, jobName: 'My Batch Job', status: 'Finished', type: 'Machine Learning', batchJobFile: 'machineLearning3.jar', price: 632 },
-      { id: 6, jobName: 'My Batch Job', status: 'Running', type: 'Hadoop', batchJobFile: 'batchJob123.jar', price: 100 },
-    ];
+    this.loadBatchJobList();
+  }
+
+  loadBatchJobList() {
+    this.orderService.getBatchJobList().subscribe(val => {
+      this.batchJobs = val;
+    });
   }
 
   fileSelected(event) {
@@ -43,34 +44,50 @@ export class OrderPageComponent implements OnInit {
   }
 
   submitBatchJob() {
-    // TODO: submit batch job to backend
     console.log(this.batchJob);
 
-    let suggestedBatchJob = new BatchJob(this.batchJob.id,
-      this.batchJob.jobName,
-      "Waiting",
-      this.batchJob.type,
-      this.batchJob.batchJobFile,
-      this.batchJob.price,
-      this.batchJob.deadline,
-      this.batchJob.price,
-      this.batchJob.deadline); // Same suggested value as submitted
+    let verifiedJob;
+    this.batchJob.status = "SUBMITTED";
+    this.orderService.create(this.batchJob).subscribe(val => {
+      verifiedJob = val;
+      console.log("Verified batch job: " + verifiedJob);
 
-    if (this.batchJob.price != suggestedBatchJob.price) {
-      // Remind user about suggested price
-    }
+      // If suggested price or suggested deadline not empty, user needs to submit again.
+      if (verifiedJob.suggestedPrice) {
+        this.batchJob.price = verifiedJob.suggestedPrice;
+        this.priceNotMatch = true;
+      }
 
-    this.showSubmitSuccess();
+      if (verifiedJob.suggestDeadline) {
+        this.batchJob.deadline = new Date(verifiedJob.suggestDeadline);
+        this.deadlineNotMatch = true;
+      }
+
+      if (this.priceNotMatch || this.deadlineNotMatch) {
+        this.showSubmitFailure();
+      }
+
+      if (!verifiedJob.suggestedPrice && !verifiedJob.suggestDeadline) {
+        // If price and deadline empty, the job has been submitted.
+        this.loadBatchJobList();
+        this.showSubmitSuccess();
+        this.priceNotMatch = false;
+        this.deadlineNotMatch = false;
+      }
+    });
   }
 
   showSubmitSuccess() {
-    console.log("Show submit success snackbar");
     this.openSnackBar("Submit batch job successfully", "OK");
+  }
+
+  showSubmitFailure() {
+    this.openSnackBar("Price or deadline not met, use suggested price/deadline and submit again.", "OK");
   }
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action, {
-      duration: 2000,
+      duration: 10000,
     });
   }
 }

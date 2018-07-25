@@ -11,16 +11,10 @@
           <mat-form-field>
             <input matInput
                    placeholder="Job Name"
-                   value="{{ batchJob.jobName }}">
+                   [(ngModel)]="batchJob.name">
           </mat-form-field>
         </td>
         <td>
-          <input type="file"
-                 id="batchJobFile"
-                 name="batchJobFile"
-                 (change)="fileSelected($event)" />
-        </td>
-        <td colspan="2">
           <mat-form-field>
             <mat-select placeholder="Batch Job Type">
               <mat-option *ngFor="let type of jobTypes"
@@ -30,6 +24,12 @@
             </mat-select>
           </mat-form-field>
         </td>
+        <td>
+          <input type="file"
+                 id="batchJobFile"
+                 name="batchJobFile"
+                 (change)="fileSelected($event)" />
+        </td>
       </tr>
       <tr>
         <td>
@@ -37,7 +37,10 @@
             <input matInput
                    placeholder="Expected Price"
                    type="number"
-                   value="{{ batchJob.expectedPrice }}">
+                   [(ngModel)]="batchJob.price">
+            <mat-hint class="warn-hint"
+                      align="start"
+                      *ngIf="priceNotMatch">Price not met, will use suggested price</mat-hint>
             <span matPrefix>$&nbsp;</span>
           </mat-form-field>
         </td>
@@ -46,22 +49,16 @@
             <input matInput
                    [matDatepicker]="deadlinepicker"
                    placeholder="Choose deadline"
-                   value="{{ batchJob.deadlineDate }}">
+                   [(ngModel)]="batchJob.deadline">
             <mat-datepicker-toggle matSuffix
                                    [for]="deadlinepicker"></mat-datepicker-toggle>
             <mat-datepicker #deadlinepicker></mat-datepicker>
+            <mat-hint class="warn-hint"
+                      align="start"
+                      *ngIf="deadlineNotMatch">Deadline not met, will use suggested deadline</mat-hint>
           </mat-form-field>
         </td>
         <td>
-          <mat-form-field>
-            <input matInput
-                   [matDatepicker]="starttimepicker"
-                   placeholder="Choose a start time"
-                   value="{{ batchJob.startDate }}">
-            <mat-datepicker-toggle matSuffix
-                                   [for]="starttimepicker"></mat-datepicker-toggle>
-            <mat-datepicker #starttimepicker></mat-datepicker>
-          </mat-form-field>
         </td>
       </tr>
       <tr>
@@ -73,9 +70,6 @@
         <td></td>
         <td fxLayout="row"
             fxLayoutAlign="space-around center">
-          <button mat-stroked-button
-                  color="primary"
-                  (click)="verifyPrice()">Verify Price</button>
           <button mat-flat-button
                   (click)="submitBatchJob()"
                   color="primary">Submit</button>
@@ -96,11 +90,11 @@
           *matCellDef="let job"> {{job.id}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="jobName">
+    <ng-container matColumnDef="name">
       <th mat-header-cell
           *matHeaderCellDef> Job Name </th>
       <td mat-cell
-          *matCellDef="let job"> {{job.jobName}} </td>
+          *matCellDef="let job"> {{job.name}} </td>
     </ng-container>
 
     <ng-container matColumnDef="status">
@@ -132,6 +126,15 @@
       <td mat-cell
           *matCellDef="let job">
         {{job.price}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="deadline">
+      <th mat-header-cell
+          *matHeaderCellDef> Batch Job Deadline </th>
+      <td mat-cell
+          *matCellDef="let job">
+        {{job.deadline}}
       </td>
     </ng-container>
 
