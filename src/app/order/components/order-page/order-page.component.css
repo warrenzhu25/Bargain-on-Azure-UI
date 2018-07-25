@@ -20,3 +20,7 @@
 .warn-hint {
   color: orangered;
 }
+
+.delete-job-icon {
+  cursor: pointer;
+}

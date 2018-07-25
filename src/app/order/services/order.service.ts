@@ -14,4 +14,9 @@ export class OrderService {
   getBatchJobList(): Observable<BatchJob[]> {
     return this.http.get<BatchJob[]>(Urls.ServiceUrls.JOB_LIST_URL);
   }
+
+  deleteJob(id: number): Observable<Object> {
+    return this.http.delete(Urls.ServiceUrls.DELETE_JOB_URL + id);
+  }
+
 }

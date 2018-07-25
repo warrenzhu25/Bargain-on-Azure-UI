@@ -16,6 +16,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { MatListModule } from '@angular/material/list';
     MatListModule,
     BrowserModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatIconModule
   ],
   exports: [
     MatTabsModule,
@@ -56,7 +58,8 @@ import { MatListModule } from '@angular/material/list';
     MatListModule,
     BrowserModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatIconModule
   ]
 })
 export class PlatformModule { }
